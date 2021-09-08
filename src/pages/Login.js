@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import {
   Text,
   Center,
@@ -7,7 +8,7 @@ import {
   Input,
   FormControl,
   Button,
-  FormHelperText,
+  useToast,
 } from "@chakra-ui/react";
 
 import { useState } from "react";
@@ -18,13 +19,26 @@ const Login = () => {
   const [usernameInvalid, setUsernameInvalid] = useState(false);
   const [passwordInvalid, setPasswordInvalid] = useState(false);
 
+  let usernameToastRef = useRef();
+  let passwordToastRef = useRef();
+
+  const toast = useToast();
+
   const submit = () => {
     if (username !== "johnshift") {
       setUsernameInvalid(true);
+      usernameToastRef.current = toast({
+        title: "Username not found",
+        status: "error",
+      });
     }
 
     if (password !== "john123") {
       setPasswordInvalid(true);
+      passwordToastRef.current = toast({
+        title: "Incorrect password",
+        status: "error",
+      });
     }
   };
 
@@ -37,7 +51,7 @@ const Login = () => {
           borderColor="gray.300"
           borderRadius="lg"
           w={[300, 620]}
-          h={[330, 620]}
+          h={[300, 600]}
           p={[15, 50]}
         >
           <Center mb={[2, 50]}>
@@ -54,14 +68,10 @@ const Login = () => {
                 value={username}
                 onChange={(e) => {
                   setUsernameInvalid(false);
+                  toast.close(usernameToastRef.current);
                   setUsername(e.target.value);
                 }}
               />
-              {usernameInvalid && (
-                <FormHelperText color="red" textAlign="center">
-                  Username not found
-                </FormHelperText>
-              )}
             </FormControl>
           </Center>
           <Center mb={[5, 50]}>
@@ -75,14 +85,10 @@ const Login = () => {
                 value={password}
                 onChange={(e) => {
                   setPasswordInvalid(false);
+                  toast.close(passwordToastRef.current);
                   setPassword(e.target.value);
                 }}
               />
-              {passwordInvalid && (
-                <FormHelperText color="red" textAlign="center">
-                  Incorrect password
-                </FormHelperText>
-              )}
             </FormControl>
           </Center>
 
