@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useLayoutEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -20,9 +20,15 @@ const Login = () => {
   const toast = useToast();
   const user = useSelector((state) => state.user.value);
   const history = useHistory();
-  if (user.username === 'johnshift') {
-    history.replace('/');
-  }
+
+  useLayoutEffect(() => {
+    if (user.username === 'johnshift') {
+      history.replace('/');
+    }
+    return () => {
+
+    };
+  }, []);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
