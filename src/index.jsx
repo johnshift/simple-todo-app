@@ -1,18 +1,11 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import { configureStore } from '@reduxjs/toolkit';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import userReducer from './features/user';
-
-const store = configureStore({
-  reducer: {
-    user: userReducer,
-  },
-});
+import store from './store';
 
 ReactDOM.render(
   <React.StrictMode>

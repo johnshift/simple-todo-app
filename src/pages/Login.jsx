@@ -50,6 +50,10 @@ const Login = () => {
     }
 
     dispatch(login({ username }));
+    toast({
+      title: `Welcome ${username}!`,
+      status: 'success',
+    });
     history.push('/');
   };
 

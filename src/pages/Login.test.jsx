@@ -3,9 +3,20 @@ import React from 'react';
 import {
   render, screen, fireEvent,
 } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 import Login from './Login';
 
-beforeEach(() => render(<Login />));
+import store from '../store';
+
+beforeEach(() => {
+  render(
+    <Provider store={store}>
+      <Login />
+    </Provider>,
+    { wrapper: BrowserRouter },
+  );
+});
 
 describe('login elements', () => {
   test('login title is visible', () => {
@@ -75,5 +86,19 @@ describe('login elements', () => {
 
     // red border on input
     expect(screen.getByPlaceholderText('Password').getAttribute('aria-invalid')).toBeNull();
+  });
+
+  test('on login success, display toast', async () => {
+    // hardcode credentials
+    await fireEvent.change(screen.getByPlaceholderText('Username'), { target: { value: 'johnshift' } });
+    await fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: 'john123' } });
+    await fireEvent.click(screen.getByRole('button', { name: /login/i }));
+
+    // should have no error indicators
+    expect(screen.getByPlaceholderText('Username').getAttribute('aria-invalid')).toBeNull();
+    expect(screen.getByPlaceholderText('Password').getAttribute('aria-invalid')).toBeNull();
+
+    // should display success toast
+    expect(await screen.findByText(/welcome johnshift!/i)).toBeInTheDocument();
   });
 });
