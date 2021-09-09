@@ -106,4 +106,5 @@ describe('login/logout', () => {
   test.todo('unauthorized access is redirected to "/login"');
   test.todo('logout successful');
   test.todo('logout is redirecrted to "/login"');
+  test.todo('redirect to "/" if already logged in when accessing "/login"');
 });
