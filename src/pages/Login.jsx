@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 
+import { useDispatch } from 'react-redux';
 import {
   Text,
   Center,
@@ -11,6 +12,8 @@ import {
   Button,
   useToast,
 } from '@chakra-ui/react';
+import { useHistory } from 'react-router-dom';
+import { login } from '../features/user';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -22,6 +25,10 @@ const Login = () => {
   const passwordToastRef = useRef();
 
   const toast = useToast();
+
+  const dispatch = useDispatch();
+
+  const history = useHistory();
 
   const submit = () => {
     if (username !== 'johnshift') {
@@ -39,7 +46,11 @@ const Login = () => {
         title: 'Incorrect password',
         status: 'error',
       });
+      return;
     }
+
+    dispatch(login({ username }));
+    history.push('/');
   };
 
   return (
