@@ -18,7 +18,7 @@ beforeEach(() => {
   );
 });
 
-describe('login/logout', () => {
+describe('login page', () => {
   test('login title is visible', () => {
     expect(screen.getByTitle('Login')).toBeInTheDocument();
   });

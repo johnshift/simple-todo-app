@@ -10,7 +10,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Home from './pages/Home';
 
-import Navbar from './components/Navbar';
+import LogoutBtn from './components/LogoutBtn';
 
 const UserAuthRoute = ({ children, ...rest }) => {
   const user = useSelector((state) => state.user.value);
@@ -30,7 +30,7 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Navbar />
+        <LogoutBtn />
         <Switch>
           <UserAuthRoute exact path="/">
             <Home />
