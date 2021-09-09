@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Text,
   Center,
@@ -16,6 +16,14 @@ import { useHistory } from 'react-router-dom';
 import { login } from '../features/user';
 
 const Login = () => {
+  // if already logged in, redirect to "/"
+  const toast = useToast();
+  const user = useSelector((state) => state.user.value);
+  const history = useHistory();
+  if (user.username === 'johnshift') {
+    history.replace('/');
+  }
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [usernameInvalid, setUsernameInvalid] = useState(false);
@@ -24,11 +32,7 @@ const Login = () => {
   const usernameToastRef = useRef();
   const passwordToastRef = useRef();
 
-  const toast = useToast();
-
   const dispatch = useDispatch();
-
-  const history = useHistory();
 
   const submit = (e) => {
     e.preventDefault();
