@@ -1,4 +1,5 @@
-import { useRef } from "react";
+import React, { useRef, useState } from 'react';
+
 import {
   Text,
   Center,
@@ -9,35 +10,33 @@ import {
   FormControl,
   Button,
   useToast,
-} from "@chakra-ui/react";
-
-import { useState } from "react";
+} from '@chakra-ui/react';
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [usernameInvalid, setUsernameInvalid] = useState(false);
   const [passwordInvalid, setPasswordInvalid] = useState(false);
 
-  let usernameToastRef = useRef();
-  let passwordToastRef = useRef();
+  const usernameToastRef = useRef();
+  const passwordToastRef = useRef();
 
   const toast = useToast();
 
   const submit = () => {
-    if (username !== "johnshift") {
+    if (username !== 'johnshift') {
       setUsernameInvalid(true);
       usernameToastRef.current = toast({
-        title: "Username not found",
-        status: "error",
+        title: 'Username not found',
+        status: 'error',
       });
     }
 
-    if (password !== "john123") {
+    if (password !== 'john123') {
       setPasswordInvalid(true);
       passwordToastRef.current = toast({
-        title: "Incorrect password",
-        status: "error",
+        title: 'Incorrect password',
+        status: 'error',
       });
     }
   };
@@ -55,7 +54,7 @@ const Login = () => {
           p={[15, 50]}
         >
           <Center mb={[2, 50]}>
-            <Text fontSize={["4xl", "6xl"]}>Login</Text>
+            <Text fontSize={['4xl', '6xl']}>Login</Text>
           </Center>
 
           <Center mb={[5, 50]}>
