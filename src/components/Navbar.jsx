@@ -10,7 +10,7 @@ import {
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { Link, useHistory } from 'react-router-dom';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../features/user';
 
 const Navbar = () => {
@@ -21,6 +21,8 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const toast = useToast();
   const history = useHistory();
+
+  const isLoggedIn = useSelector((state) => state.user.value.username === 'johnshift');
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -33,42 +35,46 @@ const Navbar = () => {
   };
 
   return (
-    <>
-      <Box style={{ position: 'absolute', top: 5, right: 5 }}>
-        <IconButton
-          ref={btnRef}
-          aria-label="Menu"
-          icon={<HamburgerIcon />}
-          variant="outline"
-          onClick={onOpen}
-        />
-      </Box>
+    <div>
+      {isLoggedIn && (
+      <div>
+        <Box style={{ position: 'absolute', top: 5, right: 5 }}>
+          <IconButton
+            ref={btnRef}
+            aria-label="Menu"
+            icon={<HamburgerIcon />}
+            variant="outline"
+            onClick={onOpen}
+          />
+        </Box>
 
-      <Drawer
-        isOpen={isOpen}
-        onClose={onClose}
-        placement="right"
-        finalFocusRef={btnRef}
-      >
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>Navigate here</DrawerHeader>
+        <Drawer
+          isOpen={isOpen}
+          onClose={onClose}
+          placement="right"
+          finalFocusRef={btnRef}
+        >
+          <DrawerOverlay />
+          <DrawerContent>
+            <DrawerCloseButton />
+            <DrawerHeader>Navigate here</DrawerHeader>
 
-          <DrawerBody>
-            <Link to="/" onClick={onClose}>Home</Link>
-            <br />
-            <Link to="/profile" onClick={onClose}>Profile</Link>
-            <br />
-            <Link to="/login" onClick={onClose}>Login</Link>
-          </DrawerBody>
+            <DrawerBody>
+              <Link to="/" onClick={onClose}>Home</Link>
+              <br />
+              <Link to="/profile" onClick={onClose}>Profile</Link>
+              <br />
+              <Link to="/login" onClick={onClose}>Login</Link>
+            </DrawerBody>
 
-          <DrawerFooter>
-            <Button colorScheme="red" onClick={logoutHandler}>Logout</Button>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
-    </>
+            <DrawerFooter>
+              <Button colorScheme="red" onClick={logoutHandler}>Logout</Button>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
+      </div>
+      )}
+    </div>
   );
 };
 
