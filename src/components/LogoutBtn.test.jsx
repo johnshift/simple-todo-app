@@ -22,6 +22,7 @@ beforeEach(() => {
 
 describe('logout component', () => {
   test.todo('logout shows modal confirmation');
+  test.todo('close modal after logout');
   test.todo('logout shows success toast');
   test.todo('logout redirects to "/login"');
   test.todo('verify logout by navigating to "/", should redirect to "/login"');
