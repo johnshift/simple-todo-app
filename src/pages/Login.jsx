@@ -30,6 +30,7 @@ const Login = () => {
         title: 'Username not found',
         status: 'error',
       });
+      return;
     }
 
     if (password !== 'john123') {
@@ -54,7 +55,7 @@ const Login = () => {
           p={[15, 50]}
         >
           <Center mb={[2, 50]}>
-            <Text fontSize={['4xl', '6xl']}>Login</Text>
+            <Text fontSize={['4xl', '6xl']} title="Login">Login</Text>
           </Center>
 
           <Center mb={[5, 50]}>
