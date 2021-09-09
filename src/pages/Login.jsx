@@ -30,7 +30,8 @@ const Login = () => {
 
   const history = useHistory();
 
-  const submit = () => {
+  const submit = (e) => {
+    e.preventDefault();
     if (username !== 'johnshift') {
       setUsernameInvalid(true);
       usernameToastRef.current = toast({
@@ -73,45 +74,47 @@ const Login = () => {
             <Text fontSize={['4xl', '6xl']} title="Login">Login</Text>
           </Center>
 
-          <Center mb={[5, 50]}>
-            <FormControl>
-              <Input
-                isInvalid={usernameInvalid}
-                placeholder="Username"
-                textAlign="center"
-                h={[12, 20]}
-                value={username}
-                onChange={(e) => {
-                  setUsernameInvalid(false);
-                  toast.close(usernameToastRef.current);
-                  setUsername(e.target.value);
-                }}
-              />
-            </FormControl>
-          </Center>
-          <Center mb={[5, 50]}>
-            <FormControl>
-              <Input
-                isInvalid={passwordInvalid}
-                h={[12, 20]}
-                placeholder="Password"
-                textAlign="center"
-                type="password"
-                value={password}
-                onChange={(e) => {
-                  setPasswordInvalid(false);
-                  toast.close(passwordToastRef.current);
-                  setPassword(e.target.value);
-                }}
-              />
-            </FormControl>
-          </Center>
+          <form onSubmit={submit}>
+            <Center mb={[5, 50]}>
+              <FormControl>
+                <Input
+                  isInvalid={usernameInvalid}
+                  placeholder="Username"
+                  textAlign="center"
+                  h={[12, 20]}
+                  value={username}
+                  onChange={(e) => {
+                    setUsernameInvalid(false);
+                    toast.close(usernameToastRef.current);
+                    setUsername(e.target.value);
+                  }}
+                />
+              </FormControl>
+            </Center>
+            <Center mb={[5, 50]}>
+              <FormControl>
+                <Input
+                  isInvalid={passwordInvalid}
+                  h={[12, 20]}
+                  placeholder="Password"
+                  textAlign="center"
+                  type="password"
+                  value={password}
+                  onChange={(e) => {
+                    setPasswordInvalid(false);
+                    toast.close(passwordToastRef.current);
+                    setPassword(e.target.value);
+                  }}
+                />
+              </FormControl>
+            </Center>
 
-          <Center>
-            <Button w="100%" h={[12, 20]} colorScheme="purple" onClick={submit}>
-              Login
-            </Button>
-          </Center>
+            <Center>
+              <Button w="100%" h={[12, 20]} colorScheme="purple" onClick={submit} type="submit">
+                Login
+              </Button>
+            </Center>
+          </form>
         </Box>
       </Center>
       <Spacer />
