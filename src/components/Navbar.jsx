@@ -5,14 +5,32 @@ import {
   Drawer, DrawerOverlay, Button,
   DrawerContent, DrawerCloseButton,
   DrawerHeader, DrawerBody, DrawerFooter,
+  useToast,
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+
+import { useDispatch } from 'react-redux';
+import { logout } from '../features/user';
 
 const Navbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const btnRef = useRef();
+
+  const dispatch = useDispatch();
+  const toast = useToast();
+  const history = useHistory();
+
+  const logoutHandler = () => {
+    dispatch(logout());
+    toast({
+      title: 'You have successfully logged out',
+      status: 'success',
+    });
+    history.push('/login');
+    onClose();
+  };
 
   return (
     <>
@@ -46,7 +64,7 @@ const Navbar = () => {
           </DrawerBody>
 
           <DrawerFooter>
-            <Button colorScheme="red">Logout</Button>
+            <Button colorScheme="red" onClick={logoutHandler}>Logout</Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
