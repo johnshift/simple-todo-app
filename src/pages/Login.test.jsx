@@ -18,7 +18,7 @@ beforeEach(() => {
   );
 });
 
-describe('login elements', () => {
+describe('login/logout', () => {
   test('login title is visible', () => {
     expect(screen.getByTitle('Login')).toBeInTheDocument();
   });
@@ -101,4 +101,9 @@ describe('login elements', () => {
     // should display success toast
     expect(await screen.findByText(/welcome johnshift!/i)).toBeInTheDocument();
   });
+
+  test.todo('success login is redirected to "/"');
+  test.todo('unauthorized access is redirected to "/login"');
+  test.todo('logout successful');
+  test.todo('logout is redirecrted to "/login"');
 });
