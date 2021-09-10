@@ -6,15 +6,17 @@ import { persistReducer } from 'redux-persist';
 import thunk from 'redux-thunk';
 
 import userReducer from './features/user';
+import todoReducer from './features/todo';
 
 const reducers = combineReducers({
   user: userReducer,
+  todo: todoReducer,
 });
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['user'], // persist user
+  whitelist: ['user', 'todo'], // persist list
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);
