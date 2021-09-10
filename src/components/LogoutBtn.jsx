@@ -32,12 +32,13 @@ const LogoutBtn = () => {
   return (
     <div>
       {isLoggedIn && (
-      <Box style={{ position: 'absolute', top: 5, right: 5 }}>
+      <Box style={{ position: 'absolute', top: 30, right: 30 }}>
         <IconButton
           aria-label="Logout"
           icon={<Icon as={FaPowerOff} />}
           variant="outline"
           colorScheme="red"
+          isRound
           onClick={onOpen}
         />
       </Box>
