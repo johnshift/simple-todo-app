@@ -8,6 +8,7 @@ import {
 import { FaPowerOff } from 'react-icons/fa';
 
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { logout } from '../features/user';
 
 const LogoutBtn = () => {
@@ -20,9 +21,12 @@ const LogoutBtn = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
 
+  const history = useHistory();
+
   const logoutHandler = () => {
     dispatch(logout());
     onClose();
+    history.push('/login');
     toast({
       title: 'You have successfully logged out!',
       info: 'success',

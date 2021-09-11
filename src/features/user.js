@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initState = {
-  username: '',
+  username: localStorage.getItem('username') || '',
   welcomeMessage: 'click btn to retrieve message',
 };
 
@@ -13,7 +13,11 @@ export const userSlice = createSlice({
       state.username = payload;
       localStorage.setItem('username', payload);
     },
-    logout: () => initState,
+    logout: (state) => {
+      state.username = '';
+      localStorage.removeItem('username');
+      state.welcomeMessage = initState.welcomeMessage;
+    },
     retrieveMsg: (state) => {
       state.welcomeMessage = 'hardcoded message';
     },
