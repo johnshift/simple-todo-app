@@ -18,7 +18,7 @@ import { login } from '../features/user';
 const Login = () => {
   // if already logged in, redirect to "/"
   const toast = useToast();
-  const user = useSelector((state) => state.user.value);
+  const user = useSelector((state) => state.user);
   const history = useHistory();
 
   useLayoutEffect(() => {
@@ -60,7 +60,7 @@ const Login = () => {
       return;
     }
 
-    dispatch(login({ username }));
+    dispatch(login(username));
     toast({
       title: `Welcome ${username}!`,
       status: 'success',

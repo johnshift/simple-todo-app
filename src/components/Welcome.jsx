@@ -7,7 +7,7 @@ import {
 } from '@chakra-ui/react';
 
 const Welcome = () => {
-  const { username } = useSelector((state) => state.user.value);
+  const { username } = useSelector((state) => state.user);
 
   return (
     <div>

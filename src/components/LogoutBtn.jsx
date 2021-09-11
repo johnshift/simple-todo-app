@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../features/user';
 
 const LogoutBtn = () => {
-  const user = useSelector((state) => state.user.value);
+  const user = useSelector((state) => state.user);
   const isLoggedIn = user.username === 'johnshift';
   const dispatch = useDispatch();
 

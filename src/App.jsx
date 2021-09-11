@@ -12,7 +12,7 @@ import Home from './pages/Home';
 import LogoutBtn from './components/LogoutBtn';
 
 const UserAuthRoute = ({ children, ...rest }) => {
-  const user = useSelector((state) => state.user.value);
+  const user = useSelector((state) => state.user);
   const isAuthenticated = user.username === 'johnshift';
 
   return (
