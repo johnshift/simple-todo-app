@@ -1,3 +1,4 @@
+/* eslint react/prop-types: 0 */
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -13,7 +14,7 @@ import { FaTimes, FaPlus } from 'react-icons/fa';
 
 import { addTodo, deleteTodo, setTodos } from '../features/todo';
 
-import { useGetAllTodosMutation } from '../services/todo';
+import { useGetAllTodosMutation, useDeleteTodoMutation } from '../services/todo';
 
 const AddTodo = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -75,12 +76,20 @@ const AddTodo = () => {
     </>
   );
 };
+
+// need to do this to access todo.id
+// const DeleteBtn = ({
+//   todo, dispatch, deleteTodoApi,
+// }) => (
+// );
+
 const TodoList = () => {
   const { todoList } = useSelector((state) => state.todo);
 
   const dispatch = useDispatch();
 
   const [getAllTodos, { isLoading, isError }] = useGetAllTodosMutation();
+  const [deleteTodoApi] = useDeleteTodoMutation();
 
   let todosRendered = (
     <Table colorScheme="purple" size="lg">
@@ -101,6 +110,12 @@ const TodoList = () => {
             <Td>{todo.isDone.toString()}</Td>
             <Td>{todo.targetDate}</Td>
             <Td>
+              {/* <DeleteBtn
+                todo={todo}
+                dispatch={dispatch}
+                deleteTodoApi={deleteTodoApi}
+              /> */}
+
               <IconButton
                 size="xs"
                 colorScheme="red"
@@ -108,7 +123,11 @@ const TodoList = () => {
                 isRound
                 icon={<Icon as={FaTimes} />}
                 onClick={() => {
-                  dispatch(deleteTodo(todo));
+                  deleteTodoApi({ username: 'some_username', todoID: todo.id }).unwrap()
+                    .then((resp) => {
+                      console.log('delete resp: ', resp);
+                      dispatch(deleteTodo(todo));
+                    });
                 }}
               />
             </Td>
