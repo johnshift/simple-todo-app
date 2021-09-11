@@ -6,13 +6,14 @@ import {
   IconButton, Icon,
   Table, Thead, Tbody, Tr, Th, Td, Spinner,
 } from '@chakra-ui/react';
-import { FaTimes, FaEdit } from 'react-icons/fa';
+import { FaTimes } from 'react-icons/fa';
 
 import { deleteTodo, setTodos } from '../features/todo';
 
 import { useGetAllTodosMutation, useDeleteTodoMutation } from '../services/todo';
 
 import AddTodo from './AddTodo';
+import UpdateTodo from './UpdateTodo';
 
 const TodoList = () => {
   const { todoList } = useSelector((state) => state.todo);
@@ -42,16 +43,8 @@ const TodoList = () => {
             <Td>{todo.targetDate}</Td>
             <Td>
 
-              <IconButton
-                mr={5}
-                size="xs"
-                colorScheme="green"
-                variant="solid"
-                isRound
-                icon={<Icon as={FaEdit} />}
-                onClick={() => {
-                  console.log('clicked todo id: ', todo.id);
-                }}
+              <UpdateTodo
+                todo={todo}
               />
               <IconButton
                 size="xs"
@@ -81,6 +74,7 @@ const TodoList = () => {
   React.useEffect(() => {
     getAllTodos('some_username').unwrap()
       .then((todos) => {
+        // change date format of todos into ISO String
         dispatch(setTodos(todos));
       });
   }, []);
