@@ -1,87 +1,18 @@
 /* eslint react/prop-types: 0 */
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   Box, Center, Flex,
   IconButton, Icon,
-  Table, Thead, Tbody, Tr, Th, Td,
-  useDisclosure, Button,
-  AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader,
-  AlertDialogBody, AlertDialogFooter, AlertDialogCloseButton,
-  FormControl, Input, Spinner,
+  Table, Thead, Tbody, Tr, Th, Td, Spinner,
 } from '@chakra-ui/react';
-import { FaTimes, FaPlus } from 'react-icons/fa';
+import { FaTimes, FaEdit } from 'react-icons/fa';
 
-import { addTodo, deleteTodo, setTodos } from '../features/todo';
+import { deleteTodo, setTodos } from '../features/todo';
 
 import { useGetAllTodosMutation, useDeleteTodoMutation } from '../services/todo';
 
-const AddTodo = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = React.useRef();
-  const dispatch = useDispatch();
-  const [desc, setDesc] = useState('');
-
-  return (
-    <>
-      <Box style={{ position: 'absolute', bottom: 30, right: 30 }}>
-        <IconButton
-          icon={<Icon as={FaPlus} />}
-          colorScheme="purple"
-          onClick={onOpen}
-        />
-      </Box>
-      <AlertDialog
-        motionPreset="slideInBottom"
-        leastDestructiveRef={cancelRef}
-        onClose={onClose}
-        isOpen={isOpen}
-        isCentered
-      >
-        <AlertDialogOverlay />
-        <AlertDialogContent>
-          <AlertDialogHeader>Add Todo</AlertDialogHeader>
-          <AlertDialogCloseButton />
-          <AlertDialogBody>
-
-            <Center>
-              <FormControl>
-                <Input
-                  placeholder="Description ..."
-                  size="lg"
-                  value={desc}
-                  onChange={(e) => {
-                    setDesc(e.target.value);
-                  }}
-                />
-              </FormControl>
-            </Center>
-
-          </AlertDialogBody>
-          <AlertDialogFooter>
-            <Button
-              colorScheme="green"
-              ml={3}
-              onClick={() => {
-                dispatch(addTodo(desc));
-                onClose();
-                setDesc('');
-              }}
-            >
-              Create
-            </Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </>
-  );
-};
-
-// need to do this to access todo.id
-// const DeleteBtn = ({
-//   todo, dispatch, deleteTodoApi,
-// }) => (
-// );
+import AddTodo from './AddTodo';
 
 const TodoList = () => {
   const { todoList } = useSelector((state) => state.todo);
@@ -110,12 +41,18 @@ const TodoList = () => {
             <Td>{todo.isDone.toString()}</Td>
             <Td>{todo.targetDate}</Td>
             <Td>
-              {/* <DeleteBtn
-                todo={todo}
-                dispatch={dispatch}
-                deleteTodoApi={deleteTodoApi}
-              /> */}
 
+              <IconButton
+                mr={5}
+                size="xs"
+                colorScheme="green"
+                variant="solid"
+                isRound
+                icon={<Icon as={FaEdit} />}
+                onClick={() => {
+                  console.log('clicked todo id: ', todo.id);
+                }}
+              />
               <IconButton
                 size="xs"
                 colorScheme="red"
@@ -124,8 +61,7 @@ const TodoList = () => {
                 icon={<Icon as={FaTimes} />}
                 onClick={() => {
                   deleteTodoApi({ username: 'some_username', todoID: todo.id }).unwrap()
-                    .then((resp) => {
-                      console.log('delete resp: ', resp);
+                    .then(() => {
                       dispatch(deleteTodo(todo));
                     });
                 }}
