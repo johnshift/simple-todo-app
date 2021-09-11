@@ -9,19 +9,17 @@ export const userSlice = createSlice({
   name: 'user',
   initialState: initState,
   reducers: {
-    login: (state, action) => ({
-      ...state,
-      username: action.payload,
-    }),
+    login: (state, { payload }) => {
+      state.username = payload;
+      localStorage.setItem('username', payload);
+    },
     logout: () => initState,
-    retrieveMsg: (state) => ({
-      ...state,
-      welcomeMessage: '"hardcoded message"',
-    }),
-    deleteMsg: (state) => ({
-      ...state,
-      welcomeMessage: initState.welcomeMessage,
-    }),
+    retrieveMsg: (state) => {
+      state.welcomeMessage = 'hardcoded message';
+    },
+    deleteMsg: (state) => {
+      state.welcomeMessage = initState.welcomeMessage;
+    },
   },
 });
 
