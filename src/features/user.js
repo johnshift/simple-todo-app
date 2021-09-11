@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initState = {
   username: '',
-  welcomeMessage: '',
+  welcomeMessage: 'click btn to retrieve message',
 };
 
 export const userSlice = createSlice({
@@ -16,11 +16,17 @@ export const userSlice = createSlice({
     logout: () => initState,
     retrieveMsg: (state) => ({
       ...state,
-      welcomeMessage: '"hardcoded welcome message"',
+      welcomeMessage: '"hardcoded message"',
+    }),
+    deleteMsg: (state) => ({
+      ...state,
+      welcomeMessage: initState.welcomeMessage,
     }),
   },
 });
 
-export const { login, logout, retrieveMsg } = userSlice.actions;
+export const {
+  login, logout, retrieveMsg, deleteMsg,
+} = userSlice.actions;
 
 export default userSlice.reducer;
