@@ -7,11 +7,13 @@ import {
   useDisclosure, Button,
   AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader,
   AlertDialogBody, AlertDialogFooter, AlertDialogCloseButton,
-  FormControl, Input,
+  FormControl, Input, Spinner,
 } from '@chakra-ui/react';
 import { FaTimes, FaPlus } from 'react-icons/fa';
 
-import { addTodo, deleteTodo } from '../features/todo';
+import { addTodo, deleteTodo, setTodos } from '../features/todo';
+
+import { useGetAllTodosMutation } from '../services/todo';
 
 const AddTodo = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -78,6 +80,56 @@ const TodoList = () => {
 
   const dispatch = useDispatch();
 
+  const [getAllTodos, { isLoading, isError }] = useGetAllTodosMutation();
+
+  let todosRendered = (
+    <Table colorScheme="purple" size="lg">
+      <Thead>
+        <Tr>
+          <Th>ID</Th>
+          <Th>Description</Th>
+          <Th>Done</Th>
+          <Th>Target Date</Th>
+          <Th />
+        </Tr>
+      </Thead>
+      <Tbody>
+        {todoList.map((todo) => (
+          <Tr key={todo.id}>
+            <Td>{todo.id}</Td>
+            <Td>{todo.description}</Td>
+            <Td>{todo.isDone.toString()}</Td>
+            <Td>{todo.targetDate}</Td>
+            <Td>
+              <IconButton
+                size="xs"
+                colorScheme="red"
+                variant="solid"
+                isRound
+                icon={<Icon as={FaTimes} />}
+                onClick={() => {
+                  dispatch(deleteTodo(todo));
+                }}
+              />
+            </Td>
+          </Tr>
+        ))}
+      </Tbody>
+    </Table>
+  );
+  if (isLoading) {
+    todosRendered = <Spinner size="xl" />;
+  } else if (isError) {
+    todosRendered = <div>Error fetching data</div>;
+  }
+
+  React.useEffect(() => {
+    getAllTodos('some_username').unwrap()
+      .then((todos) => {
+        dispatch(setTodos(todos));
+      });
+  }, []);
+
   return (
     <>
       <AddTodo />
@@ -87,39 +139,7 @@ const TodoList = () => {
             boxShadow="md"
             rounded="lg"
           >
-            <Table colorScheme="purple" size="lg">
-              <Thead>
-                <Tr>
-                  <Th>ID</Th>
-                  <Th>Description</Th>
-                  <Th>Done</Th>
-                  <Th>Target Date</Th>
-                  <Th />
-                </Tr>
-              </Thead>
-              <Tbody>
-                {todoList.map((todo) => (
-                  <Tr key={todo.id}>
-                    <Td>{todo.id}</Td>
-                    <Td>{todo.description}</Td>
-                    <Td>{todo.done.toString()}</Td>
-                    <Td>{todo.due.toString()}</Td>
-                    <Td>
-                      <IconButton
-                        size="xs"
-                        colorScheme="red"
-                        variant="solid"
-                        isRound
-                        icon={<Icon as={FaTimes} />}
-                        onClick={() => {
-                          dispatch(deleteTodo(todo));
-                        }}
-                      />
-                    </Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
+            {todosRendered}
           </Box>
         </Center>
       </Flex>
