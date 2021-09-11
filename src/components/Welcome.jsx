@@ -16,6 +16,18 @@ const Welcome = () => {
 
   const [getMsg, { isLoading, isError }] = useGetWelcomeMessageMutation();
 
+  let msg = (
+    <Text>
+      message:
+      {`  "${welcomeMessage}"`}
+    </Text>
+  );
+  if (isLoading) {
+    msg = <Text>Fetching message ...</Text>;
+  } else if (isError) {
+    msg = <Text>Error fetching message</Text>;
+  }
+
   return (
     <div>
       <Center>
@@ -27,14 +39,7 @@ const Welcome = () => {
             {username}
           </Text>
 
-          {isError && <Text>Error fetching message!</Text>}
-          {isLoading && <Text>Fetching message ...</Text>}
-          {welcomeMessage && (
-            <Text>
-              message:
-              {`  "${welcomeMessage}"`}
-            </Text>
-          )}
+          {msg}
 
           <Box>
             <Button onClick={() => {
