@@ -18,8 +18,8 @@ export const userSlice = createSlice({
       localStorage.removeItem('username');
       state.welcomeMessage = initState.welcomeMessage;
     },
-    retrieveMsg: (state) => {
-      state.welcomeMessage = 'hardcoded message';
+    setMsg: (state, { payload }) => {
+      state.welcomeMessage = payload;
     },
     deleteMsg: (state) => {
       state.welcomeMessage = initState.welcomeMessage;
@@ -28,7 +28,7 @@ export const userSlice = createSlice({
 });
 
 export const {
-  login, logout, retrieveMsg, deleteMsg,
+  login, logout, setMsg, deleteMsg,
 } = userSlice.actions;
 
 export default userSlice.reducer;

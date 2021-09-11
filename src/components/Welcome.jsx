@@ -4,14 +4,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   Heading, Center, VStack, Text, Button, Box,
 } from '@chakra-ui/react';
-import { retrieveMsg, deleteMsg } from '../features/user';
+
+import { setMsg, deleteMsg } from '../features/user';
+
+import { useGetWelcomeMessageMutation } from '../services/user';
 
 const Welcome = () => {
-  const { username } = useSelector((state) => state.user);
-
-  const welcomeMsg = useSelector((state) => state.user.welcomeMessage);
+  const { username, welcomeMessage } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
+
+  const [getMsg, { isLoading, isError }] = useGetWelcomeMessageMutation();
 
   return (
     <div>
@@ -23,12 +26,22 @@ const Welcome = () => {
             {' '}
             {username}
           </Text>
-          <Text fontSize="2xl">
-            {welcomeMsg}
-          </Text>
+
+          {isError && <Text>Error fetching message!</Text>}
+          {isLoading && <Text>Fetching message ...</Text>}
+          {welcomeMessage && (
+            <Text>
+              message:
+              {`  "${welcomeMessage}"`}
+            </Text>
+          )}
+
           <Box>
             <Button onClick={() => {
-              dispatch(retrieveMsg());
+              getMsg(username).unwrap()
+                .then(({ message }) => {
+                  dispatch(setMsg(message));
+                });
             }}
             >
               Get Custom Message
