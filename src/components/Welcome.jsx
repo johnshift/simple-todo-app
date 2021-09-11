@@ -1,13 +1,21 @@
 import React from 'react';
 
-import { useSelector } from 'react-redux';
-
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Heading, Center, VStack, Text,
 } from '@chakra-ui/react';
+import { retrieveMsg } from '../features/user';
 
 const Welcome = () => {
   const { username } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(retrieveMsg());
+  }, []);
+
+  const welcomeMsg = useSelector((state) => state.user.welcomeMessage);
 
   return (
     <div>
@@ -19,7 +27,10 @@ const Welcome = () => {
             {' '}
             {username}
           </Text>
-          <Text fontSize="2xl">Custom Message from server: TODO</Text>
+          <Text fontSize="2xl">
+            Custom Message from server:
+            {welcomeMsg}
+          </Text>
         </VStack>
       </Center>
     </div>

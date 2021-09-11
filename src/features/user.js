@@ -14,9 +14,13 @@ export const userSlice = createSlice({
       username: action.payload,
     }),
     logout: () => initState,
+    retrieveMsg: (state) => ({
+      ...state,
+      welcomeMessage: '"hardcoded welcome message"',
+    }),
   },
 });
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, retrieveMsg } = userSlice.actions;
 
 export default userSlice.reducer;
