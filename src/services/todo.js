@@ -11,21 +11,17 @@ export const todoApi = createApi({
   tagTypes: ['Todos'],
   endpoints: (builder) => ({
     getAllTodos: builder.mutation({
-      query: (username) => {
-        console.log('getAll called');
-        return ({
-          url: `/users/${username}/todos`,
-        });
-      },
-      providesTags: ['Todos'],
-      // providesTags: (result) => (
-      //   // if obtained a list of todos
-      //   // subscribe to {type: 'Todos', todo.id} for each todo
-      //   // also subscribe to 'Post'
-      //   result
-      //     ? [...result.map(({ id }) => ({ type: 'Todos', id })), 'Todos']
-      //     : ['Todos']
-      // ),
+      query: (username) => ({
+        url: `/users/${username}/todos`,
+      }),
+      providesTags: (result) => (
+        // if obtained a list of todos
+        // subscribe to {type: 'Todos', todo.id} for each todo
+        // also subscribe to 'Post'
+        result
+          ? [...result.map(({ id }) => ({ type: 'Todos', id })), 'Todos']
+          : ['Todos']
+      ),
     }),
     getTodo: builder.mutation({
       query: ({ username, todoID }) => ({
@@ -38,7 +34,7 @@ export const todoApi = createApi({
         url: `/users/${username}/todos/${todoID}`,
         method: 'DELETE',
       }),
-      invalidatesTags: [{ type: 'Todos', id: 'todoList' }],
+      invalidatesTags: (result, error, { todoID }) => [{ type: 'Todos', id: todoID }, 'Todos'],
     }),
     updateTodo: builder.mutation({
       query: ({ username, todo }) => ({
@@ -46,9 +42,8 @@ export const todoApi = createApi({
         method: 'PUT',
         body: todo,
       }),
-      invalidatesTags: ['Todos'],
+      invalidatesTags: (result, error, { todo }) => [{ type: 'Todos', id: todo.id }, 'Todos'],
       async onCacheEntryAdded({ todo }, { dispatch }) {
-        console.log('inside onCacheEntryAdded');
         dispatch(updateTodo({
           ...todo,
           targetDate: moment(todo.targetDate).toISOString(),
