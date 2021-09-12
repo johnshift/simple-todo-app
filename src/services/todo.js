@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import moment from 'moment';
+// import moment from 'moment';
 
-import { updateTodo } from '../features/todo';
+// import { updateTodo } from '../features/todo';
 
 export const todoApi = createApi({
   reducerPath: 'todoApi',
@@ -37,22 +37,28 @@ export const todoApi = createApi({
       invalidatesTags: (result, error, { todoID }) => [{ type: 'Todos', id: todoID }, 'Todos'],
     }),
     updateTodo: builder.mutation({
-      query: ({ username, todo }) => ({
-        url: `/users/${username}/todos/${todo.id}`,
+      query: ({ todo }) => ({
+        url: `/users/${todo.username}/todos/${todo.id}`,
         method: 'PUT',
         body: todo,
       }),
       invalidatesTags: (result, error, { todo }) => [{ type: 'Todos', id: todo.id }, 'Todos'],
-      async onCacheEntryAdded({ todo }, { dispatch }) {
-        dispatch(updateTodo({
-          ...todo,
-          targetDate: moment(todo.targetDate).toISOString(),
-        }));
-      },
+    }),
+    addTodo: builder.mutation({
+      query: (todo) => ({
+        url: `/users/${todo.username}/todos/`,
+        method: 'POST',
+        body: todo,
+      }),
+      invalidatesTags: (result, error, todo) => [{ type: 'Todos', id: todo.id }, 'Todos'],
     }),
   }),
 });
 
 export const {
-  useGetAllTodosMutation, useGetTodoMutation, useDeleteTodoMutation, useUpdateTodoMutation,
+  useGetAllTodosMutation,
+  useGetTodoMutation,
+  useDeleteTodoMutation,
+  useUpdateTodoMutation,
+  useAddTodoMutation,
 } = todoApi;

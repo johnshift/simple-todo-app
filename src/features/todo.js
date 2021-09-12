@@ -13,14 +13,7 @@ export const todoSlice = createSlice({
       state.todoList = payload;
     },
     addTodo: (state, { payload }) => {
-      const newID = state.lastID + 1;
-      state.lastID = newID;
-      state.todoList.push({
-        id: newID, // need to automate this in backend
-        description: payload,
-        isDone: 'false', // need to automate this in backend
-        targetDate: 'some Date', // need to automate this in backend
-      });
+      state.todoList.push(payload);
     },
     deleteTodo: (state, { payload }) => {
       state.todoList = state.todoList.filter((todo) => todo.id !== payload.id);

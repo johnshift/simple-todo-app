@@ -13,7 +13,9 @@ import { FaEdit } from 'react-icons/fa';
 
 import moment from 'moment';
 
+import { useDispatch } from 'react-redux';
 import { SingleDatepicker } from 'chakra-dayzed-datepicker';
+import { updateTodo } from '../features/todo';
 import { useGetTodoMutation, useUpdateTodoMutation } from '../services/todo';
 
 const UpdateTodo = ({ todo }) => {
@@ -26,7 +28,9 @@ const UpdateTodo = ({ todo }) => {
   // this is unnecessary since we already have the todo object passed as props
   // this is only done for exercise and demo purposes of using rtq query to a backend
   const [getTodo, { isLoading, isError }] = useGetTodoMutation();
-  const [updateTodo] = useUpdateTodoMutation();
+  const [updateTodoApi] = useUpdateTodoMutation();
+
+  const dispatch = useDispatch();
 
   const toast = useToast();
 
@@ -103,15 +107,18 @@ const UpdateTodo = ({ todo }) => {
               colorScheme="green"
               ml={3}
               onClick={() => {
-                updateTodo({
+                const updatedTodo = {
+                  ...todo,
+                  description,
+                  targetDate: moment(date).toISOString(),
+                };
+
+                updateTodoApi({
                   username: 'some_username',
-                  todo: {
-                    ...todo,
-                    description,
-                    targetDate: moment(date).toISOString(),
-                  },
+                  todo: updatedTodo,
                 }).unwrap()
                   .then((res) => {
+                    dispatch(updateTodo(updatedTodo));
                     onClose();
                     toast({
                       title: 'Update Successful!',

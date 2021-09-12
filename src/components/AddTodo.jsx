@@ -7,17 +7,21 @@ import {
   AlertDialogBody, AlertDialogFooter, AlertDialogCloseButton,
   FormControl, Input,
 } from '@chakra-ui/react';
+import { FaPlus } from 'react-icons/fa';
+import moment from 'moment';
 
 import { useDispatch } from 'react-redux';
 
-import { FaPlus } from 'react-icons/fa';
 import { addTodo } from '../features/todo';
+import { useAddTodoMutation } from '../services/todo';
 
 const AddTodo = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
   const dispatch = useDispatch();
   const [desc, setDesc] = useState('');
+
+  const [addTodoApi] = useAddTodoMutation();
 
   return (
     <>
@@ -60,9 +64,18 @@ const AddTodo = () => {
               colorScheme="green"
               ml={3}
               onClick={() => {
-                dispatch(addTodo(desc));
-                onClose();
-                setDesc('');
+                addTodoApi({
+                  id: -1, // -1 indicates a new user for backend
+                  username: 'new_username',
+                  description: desc,
+                  targetDate: moment(new Date()).toISOString(),
+                  done: false,
+                }).unwrap()
+                  .then((createdTodo) => {
+                    dispatch(addTodo(createdTodo));
+                    onClose();
+                    setDesc('');
+                  });
               }}
             >
               Create
